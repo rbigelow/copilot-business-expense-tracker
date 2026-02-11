@@ -1,6 +1,6 @@
 import os
 import csv
-from io import StringIO
+from io import StringIO, BytesIO
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app, jsonify
 from flask_login import login_required, current_user
@@ -185,8 +185,10 @@ def export():
             ])
         
         output.seek(0)
+        bytes_output = BytesIO(output.getvalue().encode('utf-8'))
+        bytes_output.seek(0)
         return send_file(
-            StringIO(output.getvalue()),
+            bytes_output,
             mimetype='text/csv',
             as_attachment=True,
             download_name=f'expenses_{datetime.utcnow().strftime("%Y%m%d")}.csv'
