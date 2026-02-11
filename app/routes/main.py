@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
+from app import db
 
 bp = Blueprint('main', __name__)
 
@@ -41,8 +42,6 @@ def dashboard():
     recent_expenses = Expense.query.filter_by(user_id=current_user.id).order_by(
         Expense.date.desc()
     ).limit(5).all()
-    
-    from app import db
     
     return render_template('dashboard.html', 
                          title='Dashboard',
