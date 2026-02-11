@@ -1,0 +1,24 @@
+{
+  "name": "copilot-business-expense-tracker",
+  "version": "1.0.0",
+  "description": "This application can be used to track business expenses.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbigelow/copilot-business-expense-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rbigelow/copilot-business-expense-tracker/issues"
+  },
+  "homepage": "https://github.com/rbigelow/copilot-business-expense-tracker#readme",
+  "dependencies": {
+    "chart.js": "^4.5.1"
+  }
+}
