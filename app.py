@@ -314,4 +314,5 @@ def export_pdf(period):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    # Debug mode should be disabled in production
+    app.run(debug=False)

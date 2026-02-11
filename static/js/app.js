@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Section navigation
-function showSection(section) {
+function showSection(section, event) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     
     document.getElementById(`${section}-section`).classList.add('active');
-    event.target.classList.add('active');
+    event.currentTarget.classList.add('active');
     
     if (section === 'reports') {
         loadReportData();
