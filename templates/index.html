@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Business Expense Tracker</h1>
+            <p>Track and analyze your business expenses</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="showSection('expenses')">Expenses</button>
+            <button class="nav-btn" onclick="showSection('reports')">Reports</button>
+        </nav>
+
+        <!-- Expenses Section -->
+        <section id="expenses-section" class="section active">
+            <div class="section-header">
+                <h2>Expense Management</h2>
+            </div>
+
+            <div class="expense-form">
+                <h3>Add New Expense</h3>
+                <form id="addExpenseForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Date:</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Meals">Meals</option>
+                                <option value="Office Supplies">Office Supplies</option>
+                                <option value="Software">Software</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <input type="text" id="description" name="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount ($):</label>
+                            <input type="number" id="amount" name="amount" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Expense</button>
+                </form>
+            </div>
+
+            <div class="expenses-list">
+                <h3>Recent Expenses</h3>
+                <div id="expensesList"></div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports-section" class="section">
+            <div class="section-header">
+                <h2>Expense Reports</h2>
+            </div>
+
+            <div class="report-controls">
+                <div class="period-selector">
+                    <label>Select Period:</label>
+                    <button class="period-btn active" data-period="30days">Last 30 Days</button>
+                    <button class="period-btn" data-period="3months">Last 3 Months</button>
+                    <button class="period-btn" data-period="6months">Last 6 Months</button>
+                    <button class="period-btn" data-period="1year">Last 1 Year</button>
+                </div>
+
+                <div class="export-buttons">
+                    <button class="btn btn-excel" onclick="exportExcel()">
+                        <span>📊</span> Export to Excel
+                    </button>
+                    <button class="btn btn-pdf" onclick="exportPDF()">
+                        <span>📄</span> Export to PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="report-summary" id="reportSummary">
+                <div class="summary-card">
+                    <h3>Total Expenses</h3>
+                    <p class="summary-value" id="totalExpenses">$0.00</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Transactions</h3>
+                    <p class="summary-value" id="totalTransactions">0</p>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-wrapper">
+                    <h3>Expenses by Category</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="chart-wrapper">
+                    <h3>Expenses Over Time</h3>
+                    <canvas id="timeChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
