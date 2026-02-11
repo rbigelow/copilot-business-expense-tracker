@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Expense Report</h2>
+    <div>
+        <a href="{{ url_for('expenses.export') }}?format=csv" class="btn btn-success">
+            <i class="bi bi-download"></i> Export CSV
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title fw-bold mb-3">Filter Report</h5>
+        <form method="GET" action="{{ url_for('expenses.report') }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="year" class="form-label">Year</label>
+                    <select name="year" id="year" class="form-select">
+                        {% for y in range(2020, 2030) %}
+                            <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="category" class="form-label">Category</label>
+                    <select name="category" id="category" class="form-select">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" 
+                                {% if request.args.get('category') == category.id|string %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-3">
+                <i class="bi bi-funnel"></i> Apply Filter
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <p>Total Expenses for {{ year }}</p>
+            <h3>${{ "%.2f"|format(total) }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Monthly Breakdown</h5>
+                {% if monthly_expenses %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] %}
+                                {% for month, total in monthly_expenses %}
+                                    <tr>
+                                        <td>{{ months[month|int - 1] }}</td>
+                                        <td class="text-end">
+                                            <strong>${{ "%.2f"|format(total) }}</strong>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No expenses for this period.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">Category Breakdown</h5>
+                {% if category_expenses %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-center">Count</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for name, total, count in category_expenses %}
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-info">{{ name }}</span>
+                                        </td>
+                                        <td class="text-center">{{ count }}</td>
+                                        <td class="text-end">
+                                            <strong>${{ "%.2f"|format(total) }}</strong>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No expenses for this period.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
