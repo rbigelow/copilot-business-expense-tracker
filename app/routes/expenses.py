@@ -260,9 +260,11 @@ def delete_category(id):
 @login_required
 def report():
     from sqlalchemy import func, extract
+    from datetime import datetime
     
     # Get filter parameters
-    year = request.args.get('year', datetime.utcnow().year, type=int)
+    current_year = datetime.utcnow().year
+    year = request.args.get('year', current_year, type=int)
     category_id = request.args.get('category', type=int)
     
     query = Expense.query.filter_by(user_id=current_user.id)
@@ -293,10 +295,14 @@ def report():
     categories = Category.query.filter_by(user_id=current_user.id).all()
     total = query.with_entities(func.sum(Expense.amount)).scalar() or 0
     
+    # Generate year range for the dropdown
+    year_range = range(2020, current_year + 2)
+    
     return render_template('expenses/report.html',
                          title='Expense Report',
                          year=year,
                          monthly_expenses=monthly_expenses,
                          category_expenses=category_expenses,
                          categories=categories,
-                         total=total)
+                         total=total,
+                         year_range=year_range)
