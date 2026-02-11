@@ -32,12 +32,25 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Run the application:
+4. (Optional) Configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env to set SECRET_KEY and other configuration options
+```
+
+5. Run the application:
+```bash
+# For development (with debug mode):
+FLASK_DEBUG=true python run.py
+
+# For production (without debug mode):
+python run.py
+```
 ```bash
 python run.py
 ```
 
-5. Open your browser and navigate to:
+6. Open your browser and navigate to:
 ```
 http://localhost:5000
 ```
